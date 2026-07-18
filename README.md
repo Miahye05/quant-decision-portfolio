@@ -1,14 +1,30 @@
 # Quant Decision Portfolio
 
-Private working lab for rebuilding applied quantitative skills and preparing a decision analytics portfolio for graduate applications.
+Private workspace for developing reproducible projects in business analytics, decision science, and data engineering.
 
 This repository is not the final public showcase. It is the workspace where I turn scattered coursework, research, and internship materials into reproducible analytical projects that I can explain clearly.
 
 ## North Star
 
-Business problems -> structured data -> analytical models -> evidence-based decisions.
+I try to approach every project the same way: start with a business question, build the data, test the analysis, and understand the decision.
 
-The goal is to build projects that show applied quantitative reasoning in business systems, not coding for its own sake.
+The goal is to make each project reproducible, interpretable, and grounded in a real analytical question.
+
+## Project Workflow
+
+```text
+Idea
+-> Business question
+-> Literature or business context
+-> Data collection or reconstruction
+-> Cleaning and validation
+-> Exploratory analysis
+-> Feature engineering
+-> Model or analytical method
+-> Evaluation and robustness checks
+-> Project README
+-> Public repository
+```
 
 ## Repository Structure
 
@@ -28,56 +44,90 @@ quant-decision-portfolio/
 
 ### Python
 
-- read and inspect CSV / Excel data
-- clean missing values and inconsistent labels
-- merge, group, pivot, and reshape data
-- construct rolling indicators
-- visualize trends and distributions
-- run basic regression models
-- compute backtest metrics
+- Data ingestion and inspection
+- Data cleaning and transformation
+- Feature construction
+- Time-series analysis
+- Visualization
+- Regression
+- Backtesting
 
 ### SQL
 
-- select, where, group by, order by
-- joins and subqueries
-- case when logic
-- common table expressions
-- window functions
-- funnel and cohort analysis patterns
+- Relational querying and filtering
+- Joins and subqueries
+- Aggregation and KPI logic
+- CASE WHEN feature construction
+- CTE-based query organization
+- Window functions
+- Funnel and cohort analysis
+- Reproducible reporting queries
 
 ### Applied Methods
 
-- financial backtesting
-- performance evaluation
-- missingness and completeness analysis
-- panel data regression
-- difference-in-differences
-- survey and mediation analysis
+#### Data Engineering
+
+- Missingness analysis
+- Completeness scoring
+- Indicator dictionaries
+- Data validation
+
+#### Statistical Modeling
+
+- Regression
+- Panel data
+- Difference-in-differences
+- Robustness checks
+
+#### Decision Analytics
+
+- Financial backtesting
+- Performance evaluation
+- Signal construction
+- Scenario comparison
+
+#### Behavioral Analytics
+
+- Survey analysis
+- Mediation analysis
+- Adoption and trust modeling
 
 ## Public Project Pipeline
 
 Work should only move from this private lab to a public repository when it satisfies the checklist:
 
-- the data source is public, synthetic, or properly anonymized
-- no internal company files, tokens, private reports, or third-party confidential materials are included
-- the README explains the question, data, method, result, role, and limitations
-- notebooks or scripts can be rerun
-- figures and tables can be reproduced
-- I can explain the assumptions, code, results, and limitations without relying on AI output as a black box
+- Use only public, synthetic, or properly anonymized data.
+- Remove confidential company materials, tokens, private reports, and third-party restricted files.
+- Document the question, data, methods, results, role, and limitations.
+- Ensure notebooks or scripts can be rerun.
+- Generate reproducible figures and tables.
+- Explain every design decision without relying on AI output as a black box.
 
 ## Planned Public Repositories
 
-1. `industry-rotation-backtest`
-   - public-data reconstruction of an industry rotation strategy
-   - signal construction, backtesting, performance metrics, robustness checks
+### `industry-rotation-backtest`
 
-2. `esg-disclosure-analytics`
-   - ESG disclosure data engineering and completeness analysis
-   - indicator dictionary, missingness heatmap, firm / industry comparison
+Objective: Reconstruct an industry rotation strategy using public data.
 
-3. `trade-policy-did-analysis`
-   - panel-data project using DID for policy impact evaluation
-   - model assumptions, regression tables, robustness diagnostics
+Deliverables: Signal construction notebook, backtesting report, performance metrics, robustness checks.
+
+Methods: Python, pandas, time-series analysis, backtesting.
+
+### `esg-disclosure-analytics`
+
+Objective: Build an ESG disclosure dataset and evaluate disclosure completeness.
+
+Deliverables: Indicator dictionary, completeness scoring, missingness heatmap, firm and industry comparison.
+
+Methods: Data cleaning, indicator design, missingness analysis, visualization.
+
+### `trade-policy-did-analysis`
+
+Objective: Evaluate policy impact using panel data and difference-in-differences.
+
+Deliverables: Model assumptions, regression tables, robustness diagnostics, limitations note.
+
+Methods: Panel data, DID, regression, robustness checks.
 
 ## Working Principle
 
