@@ -1,0 +1,8 @@
+# Keep private or generated data out of git unless explicitly approved.
+data/raw/*
+data/processed/*.csv
+outputs/*.csv
+outputs/figures/*.png
+
+!data/README.md
+!outputs/README.md
