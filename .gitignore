@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.venv/
+venv/
+
+# Data files that may be private or too large.
+# Add approved public/sample data explicitly when needed.
+data/private/
+data/raw-internal/
+*.key
+*.pem
+*.env
+.env
+
+# Office temp files
+~$*
