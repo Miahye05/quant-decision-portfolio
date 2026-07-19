@@ -1,88 +1,40 @@
-# A-Share Quadrant Rotation Reconstruction
+# A-Share Quadrant Rotation
 
-This project reconstructs an A-share industry quadrant rotation workflow using modular, reproducible code. Data inputs are handled locally and are not included in the repository.
+Reproducible reconstruction of an A-share industry rotation workflow using prosperity and valuation signals.
 
-## Question
+The public version runs on deterministic synthetic data. A private validation version was developed with restricted local A-share industry panels.
 
-Can A-share industry allocation decisions be structured through a two-dimensional framework of prosperity and valuation?
+## Results
 
-## Methodology
+Sample-data run:
 
-The project starts from a simple economic hypothesis: industry returns may differ when fundamental prosperity and valuation conditions are considered jointly. The four-quadrant framework is used to compare whether a target group shows stronger forward returns, better risk-adjusted performance, or lower drawdowns than an equal-weight industry benchmark.
+<img src="assets/quadrant_comparison.png" alt="Four-quadrant comparison" width="760">
 
-One testable hypothesis is that high prosperity / low valuation industries may combine improving fundamentals with a valuation cushion, while low prosperity / high valuation industries may face weaker forward risk-reward.
+<img src="assets/equity_curve.png" alt="Strategy equity curve" width="760">
 
-Prosperity is measured with revenue growth, profit growth, and ROE percentiles. Valuation is measured with PE and PB percentiles. Historical percentiles are used so that each industry is compared with its own trailing history rather than with industries that may have structurally different valuation levels.
+## Pipeline
 
-The default cut point is 0.5. This creates four interpretable groups and keeps the rule transparent enough to audit before adding more complicated signal thresholds.
-
-## Framework
-
-![Quadrant framework](assets/quadrant_framework.png)
-
-## Core Logic
-
-The reconstruction follows this workflow:
-
-1. Build industry-level prosperity indicators from revenue growth, profit growth, and ROE.
-2. Build industry-level valuation indicators from PE and PB percentiles.
-3. Convert daily signals to weekly decision dates.
-4. Classify industries into four quadrants.
-5. Select a target quadrant using the previous week's signal.
-6. Evaluate next-week industry returns against an equal-weight industry benchmark.
-7. Compare all four quadrants by return, volatility, Sharpe ratio, drawdown, active return, and turnover.
-8. Report performance, latest quadrant distribution, and week-over-week migration.
-
-## Quadrants
-
-| Quadrant | Prosperity | Valuation |
-|---|---:|---:|
-| High prosperity / high valuation | > 0.5 | > 0.5 |
-| High prosperity / low valuation | > 0.5 | <= 0.5 |
-| Low prosperity / high valuation | <= 0.5 | > 0.5 |
-| Low prosperity / low valuation | <= 0.5 | <= 0.5 |
+1. Build prosperity scores from revenue growth, profit growth, and ROE percentiles.
+2. Build valuation scores from PE and PB rolling percentiles.
+3. Classify industries into four prosperity-valuation quadrants.
+4. Backtest next-week industry returns against an equal-weight benchmark.
+5. Compare quadrant performance, drawdown, active return, and turnover.
 
 ## Run
-
-The default run uses deterministic synthetic A-share industry data to test the full pipeline.
-
-A private validation version of this project was developed with restricted local A-share industry datasets. The public repository uses deterministic synthetic data to preserve reproducibility while respecting data licensing and confidentiality constraints.
 
 ```bash
 python3 scripts/run_quadrant_rotation.py --data-source sample
 python3 scripts/generate_readme_figures.py --target-quadrant low_low
 ```
 
-The same pipeline can be connected to external industry panels once the input files are standardized.
+## Notes
 
-## Sample Results
-
-The figures below are generated from the deterministic synthetic sample run. They are included to demonstrate the research workflow and should not be interpreted as market conclusions.
-
-![Four-quadrant comparison](assets/quadrant_comparison.png)
-
-![Year-by-year active return](assets/calendar_year_active_return.png)
-
-![Strategy equity curve](assets/equity_curve.png)
-
-## Interpretation
-
-The main result table is `outputs/quadrant_comparison.csv`. It is designed to answer four questions:
-
-1. Which quadrant performs best on annualized return and Sharpe ratio?
-2. Does the selected quadrant consistently outperform the equal-weight benchmark?
-3. How severe is the maximum drawdown?
-4. Which calendar years or market regimes weaken the signal?
-
-The target quadrant is not assumed to be correct in advance. The comparison table is meant to test whether a quadrant such as high prosperity / low valuation has stronger empirical support than alternatives such as low prosperity / low valuation.
-
-## Assumptions
-
-- Time alignment: week-ending signals are formed with the previous week's latest available signal; returns are evaluated from the next weekly price point to the following one.
-- Empty target weeks: if no industry falls into the selected quadrant, the strategy is treated as holding cash.
-- Transaction cost: the default assumption is 10 bps times one-way weekly turnover.
-- Sharpe ratio: calculated using a configurable annual risk-free-rate assumption; the default is 0.
-- Active return index: `active_return_index` compounds weekly strategy-minus-benchmark returns. It is an active-return index, not the same object as strategy equity divided by benchmark equity.
+- High prosperity / low valuation is treated as a testable hypothesis, not an assumed winner.
+- Signals use each industry's own trailing percentiles.
+- Previous week's signal selects the portfolio; returns are evaluated from the next weekly price point to the following one.
+- Empty target weeks are treated as cash holdings.
+- Default transaction-cost assumption is `10 bps * one-way turnover`.
+- Sharpe ratio uses a configurable annual risk-free-rate assumption; default is `0`.
 
 ## Generated Outputs
 
