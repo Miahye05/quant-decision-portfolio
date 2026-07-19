@@ -2,10 +2,6 @@
 
 This project reconstructs an A-share industry quadrant rotation workflow using modular, reproducible code. Data inputs are handled locally and are not included in the repository.
 
-## Brief
-
-![A-share quadrant rotation brief](assets/a-share-quadrant-brief.png)
-
 ## Question
 
 Can A-share industry allocation decisions be structured through a two-dimensional framework of prosperity and valuation?
@@ -19,6 +15,10 @@ One testable hypothesis is that high prosperity / low valuation industries may c
 Prosperity is measured with revenue growth, profit growth, and ROE percentiles. Valuation is measured with PE and PB percentiles. Historical percentiles are used so that each industry is compared with its own trailing history rather than with industries that may have structurally different valuation levels.
 
 The default cut point is 0.5. This creates four interpretable groups and keeps the rule transparent enough to audit before adding more complicated signal thresholds.
+
+## Framework
+
+![Quadrant framework](assets/quadrant_framework.png)
 
 ## Core Logic
 
@@ -50,9 +50,20 @@ A private validation version of this project was developed with restricted local
 
 ```bash
 python3 scripts/run_quadrant_rotation.py --data-source sample
+python3 scripts/generate_readme_figures.py --target-quadrant low_low
 ```
 
 The same pipeline can be connected to external industry panels once the input files are standardized.
+
+## Sample Results
+
+The figures below are generated from the deterministic synthetic sample run. They are included to demonstrate the research workflow and should not be interpreted as market conclusions.
+
+![Four-quadrant comparison](assets/quadrant_comparison.png)
+
+![Year-by-year active return](assets/calendar_year_active_return.png)
+
+![Strategy equity curve](assets/equity_curve.png)
 
 ## Interpretation
 
