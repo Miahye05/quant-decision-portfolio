@@ -35,6 +35,8 @@ The reconstruction follows this workflow:
 
 The default run uses deterministic synthetic A-share industry data to test the full pipeline.
 
+A private validation version of this project was developed with restricted local A-share industry datasets. The public repository uses deterministic synthetic data to preserve reproducibility while respecting data licensing and confidentiality constraints.
+
 ```bash
 python3 scripts/run_quadrant_rotation.py --data-source sample
 ```
