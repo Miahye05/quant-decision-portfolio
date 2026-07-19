@@ -11,7 +11,12 @@ PROJECT_DIR = Path(__file__).resolve().parents[1]
 SRC_DIR = PROJECT_DIR / "src"
 sys.path.insert(0, str(SRC_DIR))
 
-from a_share_quadrant.backtest import run_weekly_rotation, summarize_backtest  # noqa: E402
+from a_share_quadrant.backtest import (  # noqa: E402
+    calendar_year_returns,
+    compare_quadrants,
+    run_weekly_rotation,
+    summarize_backtest,
+)
 from a_share_quadrant.config import QuadrantConfig  # noqa: E402
 from a_share_quadrant.sample_data import generate_sample_panels  # noqa: E402
 from a_share_quadrant.signals import (  # noqa: E402
@@ -48,9 +53,27 @@ class AShareQuadrantPipelineTest(unittest.TestCase):
         )
         summary = summarize_backtest(returns)
         portfolios = set(summary["portfolio"])
-        self.assertIn("strategy", portfolios)
+        self.assertIn("strategy_net", portfolios)
         self.assertIn("equal_weight_benchmark", portfolios)
-        self.assertIn("strategy_minus_benchmark", portfolios)
+        self.assertIn("active_return_index", portfolios)
+        self.assertIn("turnover", returns.columns)
+        self.assertIn("transaction_cost", returns.columns)
+
+    def test_all_quadrants_can_be_compared(self) -> None:
+        close, prosperity, valuation = build_weekly_signals(self.panels, self.config)
+        comparison = compare_quadrants(close, prosperity, valuation)
+        annual_returns = calendar_year_returns(
+            run_weekly_rotation(
+                close,
+                prosperity,
+                valuation,
+                target_quadrant="low_low",
+            )
+        )
+        self.assertEqual(len(comparison), 4)
+        self.assertIn("target_quadrant", comparison.columns)
+        self.assertIn("sharpe_ratio", comparison.columns)
+        self.assertFalse(annual_returns.empty)
 
     def test_quadrant_outputs_are_available(self) -> None:
         _, prosperity, valuation = build_weekly_signals(self.panels, self.config)

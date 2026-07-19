@@ -133,13 +133,19 @@ def add_table(ax: plt.Axes, columns: list[str], rows: list[list[str]], font_size
 def add_metric_cards(ax: plt.Axes, summary: pd.DataFrame) -> None:
     ax.axis("off")
     metrics = summary.set_index("portfolio")
-    strategy = metrics.loc["strategy"]
+    strategy_key = "strategy_net" if "strategy_net" in metrics.index else "strategy"
+    active_key = (
+        "active_return_index"
+        if "active_return_index" in metrics.index
+        else "strategy_minus_benchmark"
+    )
+    strategy = metrics.loc[strategy_key]
     benchmark = metrics.loc["equal_weight_benchmark"]
-    excess = metrics.loc["strategy_minus_benchmark"]
+    active = metrics.loc[active_key]
     cards = [
-        ("Strategy annualized", f"{strategy['annualized_return']:.1%}"),
+        ("Net annualized", f"{strategy['annualized_return']:.1%}"),
         ("Benchmark annualized", f"{benchmark['annualized_return']:.1%}"),
-        ("Excess annualized", f"{excess['annualized_return']:.1%}"),
+        ("Active annualized", f"{active['annualized_return']:.1%}"),
         ("Max drawdown", f"{strategy['max_drawdown']:.1%}"),
     ]
 

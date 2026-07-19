@@ -14,7 +14,12 @@ PROJECT_DIR = Path(__file__).resolve().parents[1]
 SRC_DIR = PROJECT_DIR / "src"
 sys.path.insert(0, str(SRC_DIR))
 
-from a_share_quadrant.backtest import run_weekly_rotation, summarize_backtest  # noqa: E402
+from a_share_quadrant.backtest import (  # noqa: E402
+    calendar_year_returns,
+    compare_quadrants,
+    run_weekly_rotation,
+    summarize_backtest,
+)
 from a_share_quadrant.config import QuadrantConfig, TARGET_QUADRANTS  # noqa: E402
 from a_share_quadrant.io import load_local_excel_panels  # noqa: E402
 from a_share_quadrant.sample_data import generate_sample_panels  # noqa: E402
@@ -62,6 +67,18 @@ def parse_args() -> argparse.Namespace:
         "--valuation-window-years",
         type=int,
         help="Rolling history window for valuation percentiles. Defaults to 15 for local and 3 for sample.",
+    )
+    parser.add_argument(
+        "--transaction-cost-bps",
+        type=float,
+        default=10.0,
+        help="One-way transaction cost assumption in basis points.",
+    )
+    parser.add_argument(
+        "--risk-free-rate",
+        type=float,
+        default=0.0,
+        help="Annual risk-free-rate assumption used for cash weeks and Sharpe ratio.",
     )
     return parser.parse_args()
 
@@ -125,14 +142,32 @@ def main() -> None:
         weekly_prosperity,
         weekly_valuation,
         target_quadrant=config.target_quadrant,
+        transaction_cost_bps=args.transaction_cost_bps,
+        annual_risk_free_rate=args.risk_free_rate,
     )
-    summary = summarize_backtest(returns)
+    summary = summarize_backtest(
+        returns,
+        annual_risk_free_rate=args.risk_free_rate,
+    )
+    comparison = compare_quadrants(
+        weekly_close,
+        weekly_prosperity,
+        weekly_valuation,
+        transaction_cost_bps=args.transaction_cost_bps,
+        annual_risk_free_rate=args.risk_free_rate,
+    )
+    annual_returns = calendar_year_returns(returns)
     latest = latest_quadrants(weekly_prosperity, weekly_valuation)
     migration = quadrant_migration(weekly_prosperity, weekly_valuation)
 
     output_prefix = f"a_share_{config.target_quadrant}"
     returns.to_csv(OUTPUT_DIR / f"{output_prefix}_weekly_returns.csv", index=False)
     summary.to_csv(OUTPUT_DIR / f"{output_prefix}_backtest_summary.csv", index=False)
+    comparison.to_csv(OUTPUT_DIR / "quadrant_comparison.csv", index=False)
+    annual_returns.to_csv(
+        OUTPUT_DIR / f"{output_prefix}_calendar_year_returns.csv",
+        index=False,
+    )
     latest.to_csv(OUTPUT_DIR / "latest_quadrants.csv", index=False)
     migration.to_csv(OUTPUT_DIR / "quadrant_migration.csv", index=False)
     figure_path = save_equity_curve(
@@ -150,6 +185,11 @@ def main() -> None:
         f"prosperity={prosperity_years}y, valuation={valuation_years}y"
     )
     print(
+        "Assumptions: "
+        f"transaction_cost={args.transaction_cost_bps:.1f} bps, "
+        f"risk_free_rate={args.risk_free_rate:.2%}"
+    )
+    print(
         "Signal range: "
         f"{returns['signal_date'].min().date()} to {returns['signal_date'].max().date()}"
     )
@@ -159,6 +199,9 @@ def main() -> None:
     print(f"Figure: {figure_path.relative_to(PROJECT_DIR)}")
     print()
     print(summary.to_string(index=False))
+    print()
+    print("Quadrant comparison:")
+    print(comparison.to_string(index=False))
 
 
 if __name__ == "__main__":

@@ -6,6 +6,8 @@ Expected files:
 
 - `a_share_<target_quadrant>_weekly_returns.csv`
 - `a_share_<target_quadrant>_backtest_summary.csv`
+- `a_share_<target_quadrant>_calendar_year_returns.csv`
+- `quadrant_comparison.csv`
 - `latest_quadrants.csv`
 - `quadrant_migration.csv`
 - `figures/a_share_<target_quadrant>_equity_curve.png`
