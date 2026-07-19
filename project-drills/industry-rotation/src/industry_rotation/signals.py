@@ -113,15 +113,16 @@ def latest_signal_snapshot(signal_table: pd.DataFrame) -> pd.DataFrame:
     """Return the most recent cross-sectional signal ranking."""
 
     latest_date = signal_table["date"].max()
-    columns = [
+    candidate_columns = [
         "date",
         "industry",
+        "industry_code",
         "prosperity_score",
         "valuation_score",
+        "momentum_score",
         "composite_signal",
         "signal_rank",
         "selected",
     ]
-    return signal_table.loc[signal_table["date"] == latest_date, columns].sort_values(
-        "signal_rank"
-    )
+    columns = [column for column in candidate_columns if column in signal_table.columns]
+    return signal_table.loc[signal_table["date"] == latest_date, columns].sort_values("signal_rank")

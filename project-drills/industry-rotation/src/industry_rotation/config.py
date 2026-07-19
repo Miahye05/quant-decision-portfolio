@@ -5,6 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 
+FRENCH_10_INDUSTRY_URL = (
+    "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
+    "10_Industry_Portfolios_CSV.zip"
+)
+
+
 INDUSTRIES: tuple[str, ...] = (
     "Technology",
     "Healthcare",
@@ -20,6 +26,20 @@ INDUSTRIES: tuple[str, ...] = (
 SIGNAL_WEIGHTS: dict[str, float] = {
     "prosperity_score": 0.6,
     "valuation_score": 0.4,
+}
+
+
+FRENCH_INDUSTRY_NAMES: dict[str, str] = {
+    "NoDur": "Consumer Non-Durables",
+    "Durbl": "Consumer Durables",
+    "Manuf": "Manufacturing",
+    "Enrgy": "Energy",
+    "HiTec": "Business Equipment",
+    "Telcm": "Telecommunications",
+    "Shops": "Retail and Wholesale",
+    "Hlth": "Healthcare",
+    "Utils": "Utilities",
+    "Other": "Other",
 }
 
 
