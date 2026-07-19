@@ -34,6 +34,7 @@ quant-decision-portfolio/
 ├── sql-basics/                 # joins, aggregations, windows, funnel/cohort query drills
 ├── project-drills/
 │   ├── industry-rotation/      # financial decision analytics
+│   ├── a-share-quadrant-rotation/ # A-share industry quadrant reconstruction
 │   ├── esg-disclosure/         # ESG data engineering and completeness analysis
 │   └── trade-policy-did/       # panel data and DID analysis
 ├── templates/                  # reusable README and project documentation templates
@@ -112,6 +113,16 @@ Objective: Reconstruct an industry rotation strategy using public data.
 Deliverables: Signal construction notebook, backtesting report, performance metrics, robustness checks.
 
 Methods: Python, pandas, time-series analysis, backtesting.
+
+### `a-share-quadrant-rotation`
+
+Objective: Reconstruct an A-share industry quadrant framework using prosperity and valuation signals.
+
+Deliverables: Quadrant signal pipeline, weekly rotation backtest, latest quadrant distribution, migration analysis.
+
+Methods: Rolling percentiles, PE/PB valuation scoring, prosperity scoring, weekly backtesting.
+
+Release note: This remains private until the input data is replaced by public, synthetic, or properly anonymized data.
 
 ### `esg-disclosure-analytics`
 
