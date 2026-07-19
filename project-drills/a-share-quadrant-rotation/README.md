@@ -2,6 +2,10 @@
 
 This project reconstructs an A-share industry quadrant rotation workflow using modular, reproducible code. Data inputs are handled locally and are not included in the repository.
 
+## Brief
+
+![A-share quadrant rotation brief](assets/a-share-quadrant-brief.png)
+
 ## Question
 
 Can A-share industry allocation decisions be structured through a two-dimensional framework of prosperity and valuation?
